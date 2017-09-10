@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hierarchy xmlns="http://formal.iti.kit.edu/astgen">
+    <packageName>edu.kit.iti.formal.astgen.test.expr</packageName>
+
+    <generators>
+        <node>edu.kit.iti.formal.astgen.runner.DefaultNodeGenerator</node>
+        <node>edu.kit.iti.formal.astgen.runner.NameProperty</node>
+        <node>edu.kit.iti.formal.astgen.runner.ChildrenProperty</node>
+        <node>edu.kit.iti.formal.astgen.runner.DefaultAttributeGenerator</node>
+        <node>edu.kit.iti.formal.astgen.runner.AcceptMethod0</node>
+        <node>edu.kit.iti.formal.astgen.runner.AcceptMethod1</node>
+        <node>edu.kit.iti.formal.astgen.runner.AcceptMethod2</node>
+        <hierarchy>edu.kit.iti.formal.astgen.runner.VisitorGenerator0</hierarchy>
+        <hierarchy>edu.kit.iti.formal.astgen.runner.VisitorGenerator1</hierarchy>
+        <hierarchy>edu.kit.iti.formal.astgen.runner.VisitorGenerator2</hierarchy>
+    </generators>
+
+    <nodes>
+        <node name="Expression" abstract="true">
+            <children>
+                <node name="BinaryExpression">
+                    <attr name="left" type="Expression"/>
+                    <attr name="right" type="Expression"/>
+                    <attr name="op" type="Operator"/>
+                    <children/>
+                </node>
+
+                <node name="UnaryExpression">
+                    <attr name="sub" type="Expression"/>
+                    <attr name="op" type="Operator"/>
+                    <children/>
+                </node>
+
+                <node name="Variable">
+                    <attr name="value" type="String" nonNull="true"/>
+                    <children/>
+                </node>
+
+                <node name="Literal">
+                    <attr name="value" type="Integer" frozen="true" nonNull="true"/>
+                    <children/>
+                </node>
+            </children>
+        </node>
+    </nodes>
+</hierarchy>

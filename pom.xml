@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.kit.iti.formal</groupId>
+    <artifactId>ast-generator</artifactId>
+    <packaging>maven-plugin</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>ast-generator Maven Mojo</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- The dependency to the maven API -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+        <!-- The dependency to the Jenesis4Java -->
+        <dependency>
+            <groupId>net.sourceforge.jenesis4java</groupId>
+            <artifactId>jenesis4java</artifactId>
+            <version>2.17</version>
+        </dependency>
+
+        <!-- We will use Jalopy to format the Generated source code -->
+        <dependency>
+            <groupId>jalopy</groupId>
+            <artifactId>jalopy</artifactId>
+            <version>1.5rc3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <transformSchemas>
+                        <transformSchema>
+                            <uri>http://formal.iti.kit.edu/astgen</uri>
+                            <toPrefix>astgen</toPrefix>
+                            <toFile>astgen.xsd</toFile>
+                        </transformSchema>
+                    </transformSchemas>
+                    <sources>
+                        <source>src/main/java/edu/kit/iti/formal/astgen/model</source>
+                    </sources>
+                </configuration>
+                <!--
+                    Use default configuration, implying that sources are read
+                    from the directory src/main/java below the project basedir.
+
+                    (i.e. getProject().getCompileSourceRoots() in Maven-speak).
+                -->
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
