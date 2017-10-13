@@ -15,8 +15,8 @@ public class TestXml {
     @Test
     public void gen() throws JAXBException {
         Hierarchy h = new Hierarchy();
-        h.generators.hierarchy.add("edu.kit.iti.formal.KotlinGenerator");
-        h.generators.node.add("edu.kit.iti.formal.VisitorGenerator");
+      //  h.generators.hierarchy.add("edu.kit.iti.formal.KotlinGenerator");
+      //  h.generators.node.add("edu.kit.iti.formal.VisitorGenerator");
 
         Node n = new Node();
         n.name = "Top";

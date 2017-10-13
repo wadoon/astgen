@@ -1,14 +1,10 @@
 package edu.kit.iti.formal.astgen.gen;
 
+import edu.kit.iti.formal.astgen.model.Generators;
 import lombok.Getter;
 import lombok.Setter;
 import net.sourceforge.jenesis4java.CompilationUnit;
-import net.sourceforge.jenesis4java.impl.MCodeWriter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +17,11 @@ public class HierarchyRunner extends AbstractRunner {
     @Setter
     private List<HierarchyGenerator> generators = new ArrayList<>();
 
-    public HierarchyRunner(List<String> gen) {
+    public HierarchyRunner(List<Generators.Modifier> gen) {
         gen.forEach(s -> {
                     try {
-                        generators.add(
-                                (HierarchyGenerator) Class.forName(s).newInstance());
-                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                        generators.add(Instantiator.getInstance(s));
+                    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchFieldException e) {
                         e.printStackTrace();
                     }
                 }

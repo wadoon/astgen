@@ -13,7 +13,11 @@ public class ChildrenProperty extends AbstractNodeGenerator {
     @Override
     public CompilationUnit modify(VirtualMachine vm, Node node,
                                   CompilationUnit unit) {
+
+
         PackageClass c = (PackageClass) unit.getTopLevelType();
+        //c.getMethods().add();
+
         ClassMethod m = c.newMethod(vm.newType("Collection<Object>"),
                 "getChildren");
         m.setAccess(Access.PUBLIC);

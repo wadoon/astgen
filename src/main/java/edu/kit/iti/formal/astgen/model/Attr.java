@@ -2,10 +2,7 @@ package edu.kit.iti.formal.astgen.model;
 
 import lombok.ToString;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 /**
  * @author Alexander Weigl
@@ -14,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @ToString
 @XmlType(name = "attr",
         propOrder = {"name", "type", "multi", "unique",
-                "frozen", "nonNull", "defaultValue"})
+                "frozen", "nonNull", "defaultValue","comment"})
 @XmlAccessorType(XmlAccessType.FIELD)      // UPDATE: Need this
 public class Attr {
     @XmlAttribute(required = true)
@@ -22,6 +19,9 @@ public class Attr {
 
     @XmlAttribute(required = true)
     public String type;
+
+    @XmlAttribute(required = false)
+    public Boolean resolvable;
 
     @XmlAttribute(required = false)
     public Boolean multi;
@@ -37,4 +37,8 @@ public class Attr {
 
     @XmlAttribute
     public String defaultValue;
+
+
+    @XmlElement(name = "comment")
+    public String comment;
 }

@@ -5,6 +5,8 @@ import edu.kit.iti.formal.astgen.gen.NodeRunner;
 import edu.kit.iti.formal.astgen.model.Attr;
 import edu.kit.iti.formal.astgen.model.Hierarchy;
 import edu.kit.iti.formal.astgen.model.Node;
+import edu.kit.iti.formal.astgen.runner.VisitorGenerator0;
+import edu.kit.iti.formal.astgen.runner.VisitorGenerator1;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +35,12 @@ public class Astgen {
     @Setter
     private String sourceFolder;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, JAXBException {
         Astgen astgen = new Astgen();
+
         astgen.setHierarchyFile(args[0]);
+        astgen.setSourceFolder(args[1]);
+        astgen.run();
     }
 
     public void run() throws IOException, JAXBException {

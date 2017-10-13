@@ -2,10 +2,7 @@ package edu.kit.iti.formal.astgen.model;
 
 import lombok.ToString;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +15,27 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Generators {
     @XmlElement(name = "node", required = true)
-    public List<String> node = new ArrayList<>();
+    public List<Modifier> node = new ArrayList<>();
 
     @XmlElement(name = "hierarchy", required = true)
-    public List<String> hierarchy = new ArrayList<>();
+    public List<Modifier> hierarchy = new ArrayList<>();
+
+    @XmlType(propOrder = {"clazz", "config"})
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Modifier {
+        @XmlAttribute(name = "class")
+        public String clazz;
+
+        @XmlElement(name = "entry", nillable = false)
+        public List<Entry> config = new ArrayList<>();
+    }
+
+    @XmlType(propOrder = {"key", "value"})
+    public static class Entry {
+        @XmlAttribute(required = true)
+        public String key;
+
+        @XmlValue
+        public String value;
+    }
 }

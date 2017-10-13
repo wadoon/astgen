@@ -14,25 +14,40 @@ public class DefaultAttributeGenerator extends AbstractNodeGenerator {
         PackageClass c = (PackageClass) unit.getTopLevelType();
 
         for (Attr attr : node.attributes) {
-            ClassType type = null;
+            ClassType type = vm.newType(attr.type);
 
-            if (attr.multi != null && attr.multi) {
-                if (attr.unique != null && attr.unique)
+            if (isTrue(attr.multi)) {
+                if (isTrue(attr.unique))
                     type = vm.newType("Set<" + attr.type + ">");
                 else
                     type = vm.newType("List<" + attr.type + ">");
-            } else {
-                type = vm.newType(attr.type);
+            }
+
+            if (isTrue(attr.resolvable)) {
+                type = vm.newType("IdentifiableObject<" + type + ">");
+                if (isTrue(attr.multi)) {
+                    if (isTrue(attr.unique))
+                        type = vm.newType("IdentifiableSet<" + attr.type + ">");
+                    else
+                        type = vm.newType("IdentifiableList<" + attr.type + ">");
+                }
+
+                createGetterAndSetterId(attr);
+                attr.frozen = true;
             }
 
             ClassField field = c.newField(type, attr.name);
             field.setAccess(Access.PROTECTED);
-            if (attr.frozen != null && attr.frozen) {
+            if (isTrue(attr.frozen)) {
                 field.isFinal(true);
             }
 
             if (attr.nonNull != null && attr.nonNull) {
                 field.addAnnotation("Nonnull");
+            }
+
+            if (attr.comment != null) {
+                field.setComment(Comment.DOCUMENTATION, attr.comment);
             }
         }
 
@@ -42,5 +57,13 @@ public class DefaultAttributeGenerator extends AbstractNodeGenerator {
         c.addAnnotation("RequiredArgsConstructor");
 
         return unit;
+    }
+
+    private void createGetterAndSetterId(Attr attr) {
+
+    }
+
+    private boolean isTrue(Boolean b) {
+        return b != null && b;
     }
 }

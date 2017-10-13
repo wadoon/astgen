@@ -7,7 +7,7 @@
         <node>edu.kit.iti.formal.astgen.runner.NameProperty</node>
         <node>edu.kit.iti.formal.astgen.runner.ChildrenProperty</node>
         <node>edu.kit.iti.formal.astgen.runner.DefaultAttributeGenerator</node>
-        <node>edu.kit.iti.formal.astgen.runner.AcceptMethod0</node>
+        <node>edu.kit.iti.formal.astgen.runner.AddAcceptMethod</node>
         <node>edu.kit.iti.formal.astgen.runner.AcceptMethod1</node>
         <node>edu.kit.iti.formal.astgen.runner.AcceptMethod2</node>
         <hierarchy>edu.kit.iti.formal.astgen.runner.VisitorGenerator0</hierarchy>

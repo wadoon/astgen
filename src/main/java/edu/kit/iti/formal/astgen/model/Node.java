@@ -13,7 +13,7 @@ import java.util.stream.Stream;
  */
 @ToString(exclude = "parent")
 @XmlType(name = "node",
-        propOrder = {"name", "abstrakt", "generatorClass", "attributes", "children"})
+        propOrder = {"name", "abstrakt", "generatorClass", "attributes", "children", "subPackage", "comment"})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Node {
     @XmlAttribute(name = "generator")
@@ -25,11 +25,17 @@ public class Node {
     @XmlAttribute(required = true)
     public String name;
 
-    @XmlAttribute(name = "abstract")
-    public Boolean abstrakt;
+    @XmlAttribute(name = "abstract", required = false)
+    public Boolean abstrakt = false;
 
     @XmlTransient
     public Node parent;
+
+    @XmlAttribute(name = "subPackage")
+    public String subPackage;
+
+    @XmlAttribute(name = "final", required = false)
+    public Boolean final_ = false;
 
     @XmlElementWrapper(name = "children", nillable = true)
     @XmlElement(name = "node")
@@ -37,6 +43,9 @@ public class Node {
 
     @XmlElement(name = "attr", nillable = true)
     public List<Attr> attributes = new ArrayList<>();
+
+    @XmlElement(name = "comment")
+    public String comment;
 
     public Stream<Node> getFlatList() {
         return Stream.concat(
@@ -47,5 +56,13 @@ public class Node {
     public void updateParent() {
         children.forEach(c -> c.parent = this);
         children.forEach(Node::updateParent);
+    }
+
+    public String getSubPackage() {
+        if (subPackage != null) return subPackage;
+        if (parent != null && parent.getSubPackage() != null) {
+            return parent.getSubPackage();
+        }
+        return null;
     }
 }

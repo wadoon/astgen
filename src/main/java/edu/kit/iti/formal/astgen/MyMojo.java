@@ -2,31 +2,22 @@ package edu.kit.iti.formal.astgen;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Goal which touches a timestamp file.
- *
- * @goal generate
- * @phase generate-sources
- */
+@Mojo(defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        name = "generate")
 public class MyMojo extends AbstractMojo {
-    /**
-     * Location of the file.
-     *
-     * @parameter expression="${project.build.directory}"
-     * @required
-     */
+    @Parameter(property = "project.build.directory", required = false)
     private File outputDirectory;
 
-    /**
-     * @throws MojoExecutionException
-     */
-    private File hierarchyDescription;
-
+    @Parameter(defaultValue = "src/main/astgen/")
+    private File hierarchyDescription = new File("..");
 
     public void execute() throws MojoExecutionException {
         File f = outputDirectory;
@@ -53,5 +44,10 @@ public class MyMojo extends AbstractMojo {
                 }
             }
         }
+    }
+
+    public MyMojo setHierarchyDescription(File hierarchyDescription) {
+        this.hierarchyDescription = hierarchyDescription;
+        return this;
     }
 }

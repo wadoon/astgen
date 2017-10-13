@@ -28,7 +28,7 @@ public class VisitorGenerator0 implements HierarchyGenerator {
         public VisitorGeneratorN(int arg, String source, Hierarchy hierarchy) {
             this.arg = arg;
             this.hierarchy = hierarchy;
-            type = vm.newType(AcceptMethod0.getGenericArguments(arg, "R") + " R");
+            type = vm.newType(AddAcceptMethod.getGenericArguments(arg, "R") + " R");
             cu = vm.newCompilationUnit(source, hierarchy.packageName);
             topLevel = cu.newPublicInterface("Visitor" + arg + "<R>");
         }

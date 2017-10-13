@@ -1,5 +1,6 @@
 package edu.kit.iti.formal.astgen.gen;
 
+import edu.kit.iti.formal.astgen.model.Generators;
 import edu.kit.iti.formal.astgen.model.Node;
 import edu.kit.iti.formal.astgen.runner.AbstractNodeGenerator;
 import lombok.Getter;
@@ -9,6 +10,9 @@ import net.sourceforge.jenesis4java.VirtualMachine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexander Weigl
@@ -18,7 +22,7 @@ public class NodeRunner extends AbstractRunner {
     @Getter
     private final List<NodeGenerator> generatorsUnit = new ArrayList<>();
 
-    public NodeRunner(List<String> genUnit) {
+    public NodeRunner(List<Generators.Modifier> genUnit) {
         generatorsUnit.add(new AbstractNodeGenerator() {
             @Override
             public CompilationUnit modify(VirtualMachine vm, Node node, CompilationUnit unit) {
@@ -40,10 +44,10 @@ public class NodeRunner extends AbstractRunner {
             }
         });
 
-        for (String s : genUnit) {
+        for (Generators.Modifier s : genUnit) {
             try {
-                generatorsUnit.add((NodeGenerator) Class.forName(s).newInstance());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                generatorsUnit.add(Instantiator.getInstance(s));
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
 
@@ -51,8 +55,19 @@ public class NodeRunner extends AbstractRunner {
     }
 
     private CompilationUnit createUnit(VirtualMachine vm, Node node, CompilationUnit unit) {
-        return vm.newCompilationUnit(getSourceDirectory(), getHierarchy().packageName);
+        CompilationUnit cu = vm.newCompilationUnit(getSourceDirectory(),
+                getHierarchy().packageName +
+                        (node.getSubPackage() != null ? "." + node.getSubPackage() : ""));
+        cu.addImport(getHierarchy().packageName+".*");
+        Set<String> pkgs = getHierarchy().getFlatList()
+                .map(Node::getSubPackage)
+                .filter(Objects::nonNull)
+                .map(sp -> getHierarchy().packageName + '.' + sp + ".*")
+                .collect(Collectors.toSet());
+        pkgs.forEach(cu::addImport);
+        return cu;
     }
+
     private CompilationUnit addImports(VirtualMachine vm, Node node, CompilationUnit unit) {
         unit.addImport("lombok.*");
         unit.addImport("java.util.*");
@@ -61,7 +76,6 @@ public class NodeRunner extends AbstractRunner {
 
     private CompilationUnit addClass(VirtualMachine vm, Node node, CompilationUnit unit) {
         PackageClass c = unit.newPublicClass(node.name);
-        if (node.parent != null) c.setExtends(node.parent.name);
         return unit;
     }
 

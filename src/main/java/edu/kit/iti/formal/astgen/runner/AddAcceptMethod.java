@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * @author Alexander Weigl
  * @version 1 (10.09.17)
  */
-public class AcceptMethod0 extends AbstractNodeGenerator{
+public class AddAcceptMethod extends AbstractNodeGenerator{
     public static void generateAccept(VirtualMachine vm, PackageClass c, int args) {
         String gtypes = getGenericArguments(args, "R");
 
